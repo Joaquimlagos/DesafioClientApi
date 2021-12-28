@@ -21,9 +21,6 @@ public class Phone {
   @GeneratedValue(strategy = GenerationType.IDENTITY)
   private Long id;
 
-  @Column(name = "client_apelido", insertable = false, updatable = false)
-  private String apelido;
-
   @Column(nullable = false, unique = true)
   private Integer ddd;
 
@@ -33,7 +30,4 @@ public class Phone {
   @Column(nullable = false)
   private Boolean active;
 
-  @ManyToOne(fetch = FetchType.LAZY, optional = false)
-  @JoinColumn(name = "client_apelido", nullable = false)
-  private Client client;
 }

@@ -1,6 +1,7 @@
 package com.lagos.clientapi.controllers;
 
 import com.lagos.clientapi.dto.ClientDTO;
+import com.lagos.clientapi.exeption.ClientNotFoundExeption;
 import com.lagos.clientapi.services.ClientService;
 import lombok.AllArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -22,28 +23,24 @@ public class ClientController {
   public ClientDTO create(@RequestBody @Valid ClientDTO clientDTO){
     return clientService.createClient(clientDTO);
   }
-/*
   @GetMapping("/{id}")
-  @ResponseStatus(HttpStatus.OK)
-  public PersonDTO findById(@PathVariable Long id) throws PersonNotFoundException {
-    return personService.findById(id);
-  }
-
+    public ClientDTO findByName(@PathVariable Long id) throws ClientNotFoundExeption {
+        return clientService.findById(id);
+    }
   @GetMapping
-  public List<PersonDTO> listAll() {
-    return personService.listAll();
+  public List<ClientDTO> listBeers() {
+    return clientService.listAll();
+  }
+  @DeleteMapping("/{id}")
+  @ResponseStatus(HttpStatus.NO_CONTENT)
+  public void delete(@PathVariable Long id) throws ClientNotFoundExeption {
+    clientService.delete(id);
   }
 
   @PutMapping("/{id}")
   @ResponseStatus(HttpStatus.OK)
-  public MessageResponseDTO update(@PathVariable Long id, @RequestBody @Valid PersonDTO personDTO) throws PersonNotFoundException {
-    return personService.update(id, personDTO);
+  public ClientDTO update(@PathVariable Long id, @RequestBody @Valid ClientDTO clientDTO) throws ClientNotFoundExeption {
+    return clientService.update(id, clientDTO);
   }
 
-  @DeleteMapping("/{id}")
-  @ResponseStatus(HttpStatus.NO_CONTENT)
-  public void delete(@PathVariable Long id) throws PersonNotFoundException {
-    personService.delete(id);
-  }
- */
 }

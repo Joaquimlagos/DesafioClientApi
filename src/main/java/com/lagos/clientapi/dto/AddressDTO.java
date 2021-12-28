@@ -19,16 +19,16 @@ public class AddressDTO {
   private Long id;
 
   @NotEmpty
-  private String longadouro;
+  private String street;
 
   @NotNull
   @Max(500)
   private Integer houseNumber;
 
-  private String complemento;
+  private String complement;
 
   @NotEmpty
-  private String bairro;
+  private String neighborhood;
 
   @NotEmpty
   private String city;

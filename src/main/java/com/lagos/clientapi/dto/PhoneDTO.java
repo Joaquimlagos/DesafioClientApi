@@ -21,8 +21,6 @@ public class PhoneDTO {
 
   private Long id;
 
-  private String apelido;
-
   @NotNull
   @Max(500)
   private Integer ddd;

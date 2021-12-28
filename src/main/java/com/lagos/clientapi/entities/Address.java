@@ -19,16 +19,16 @@ public class Address {
   private Long id;
 
   @Column(nullable = false)
-  private String longadouro;
+  private String street;
 
   @Column(nullable = false)
   private Integer houseNumber;
 
   @Column(nullable = false)
-  private String complemento;
+  private String complement;
 
   @Column(nullable = false)
-  private String bairro;
+  private String neighborhood;
 
   @Column(nullable = false)
   private String city;

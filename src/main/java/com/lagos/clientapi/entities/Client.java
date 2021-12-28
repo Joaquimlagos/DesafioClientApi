@@ -29,20 +29,19 @@ public class Client {
   @GeneratedValue(strategy = GenerationType.IDENTITY)
   private Long id;
 
-  @Column(name = "name",nullable = false)
+  @Column(nullable = false)
   private String name;
 
-  @Column(name = "apelido",nullable = false)
-  private String apelido;
+  @Column(nullable = false)
+  private String surname;
 
-  @Column(name = "cpf", nullable = false, unique = true)
+  @Column(nullable = false, unique = true)
   private String cpf;
 
-  @Column(name = "email", nullable = false, unique = true)
+  @Column(nullable = false, unique = true)
   private String email;
 
-  @OneToMany(fetch = FetchType.LAZY, cascade = {CascadeType.PERSIST, CascadeType.MERGE, CascadeType.REMOVE}
-  , mappedBy = "client")
+  @OneToMany(fetch = FetchType.LAZY, cascade = {CascadeType.PERSIST, CascadeType.MERGE, CascadeType.REMOVE})
   private List<Phone> phones = new ArrayList<>();
 
   @OneToOne(fetch = FetchType.LAZY,

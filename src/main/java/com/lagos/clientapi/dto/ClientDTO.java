@@ -26,7 +26,7 @@ public class ClientDTO {
 
   @NotNull
   @Size(min = 1, max = 200)
-  private String apelido;
+  private String surname;
 
   @NotEmpty
   @CPF
@@ -42,4 +42,3 @@ public class ClientDTO {
   @NotNull
   private AddressDTO address;
 }
-
