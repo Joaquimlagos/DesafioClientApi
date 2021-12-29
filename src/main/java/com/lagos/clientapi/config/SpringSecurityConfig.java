@@ -12,35 +12,13 @@ import org.springframework.security.crypto.password.NoOpPasswordEncoder;
 public class SpringSecurityConfig extends WebSecurityConfigurerAdapter {
   @Override
   protected void configure(AuthenticationManagerBuilder auth) throws Exception {
-    auth.inMemoryAuthentication().withUser("Java Techie").password("Password").roles("ADMIN");
-    auth.inMemoryAuthentication().withUser("Basant").password("Password2").roles("USER");
+    auth.inMemoryAuthentication().withUser("Joaquim Lagos").password("Password").roles("ADMIN");
   }
-
-  // security for all API
-
 
     @Override protected void configure(HttpSecurity http) throws Exception {
     http.csrf().disable();
     http.authorizeRequests().anyRequest().fullyAuthenticated().and().
     httpBasic(); }
-
-
-  // security based on URL
-
-  /*
-   * @Override protected void configure(HttpSecurity http) throws Exception {
-   * http.csrf().disable();
-   * http.authorizeRequests().antMatchers("/rest/**").fullyAuthenticated().and
-   * ().httpBasic(); }
-   */
-
-  // security based on ROLE
-  /*@Override
-  protected void configure(HttpSecurity http) throws Exception {
-    http.csrf().disable();
-    http.authorizeRequests().antMatchers("/rest/**").hasAnyRole("ADMIN").anyRequest().fullyAuthenticated().and()
-            .httpBasic();
-  } */
 
   @Bean
   public static NoOpPasswordEncoder passwordEncoder() {
