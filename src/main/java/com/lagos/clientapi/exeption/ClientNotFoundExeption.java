@@ -7,6 +7,6 @@ import org.springframework.web.bind.annotation.ResponseStatus;
 public class ClientNotFoundExeption extends Exception {
 
   public ClientNotFoundExeption(Long id) {
-    super(String.format("Person with ID %s not found!", id));
+    super(String.format("Client with ID %s not found!", id));
   }
 }

@@ -19,7 +19,7 @@ public class Phone {
   @GeneratedValue(strategy = GenerationType.IDENTITY)
   private Long id;
 
-  @Column(nullable = false, unique = true)
+  @Column(nullable = false)
   private Integer ddd;
 
   @Column(nullable = false, unique = true)
@@ -27,5 +27,4 @@ public class Phone {
 
   @Column(nullable = false)
   private Boolean active;
-
 }

@@ -23,7 +23,7 @@ public class PhoneDTO {
   private Integer ddd;
 
   @NotEmpty
-  @Size(min = 13, max = 14)
+  @Size(min = 8, max = 9)
   private String number;
 
   @NotNull

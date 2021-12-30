@@ -22,6 +22,7 @@ import org.springframework.web.servlet.view.json.MappingJackson2JsonView;
 import java.util.Collections;
 
 import static com.lagos.clientapi.utils.JsonConvertionUtils.asJsonString;
+import static org.hamcrest.Matchers.not;
 import static org.hamcrest.core.Is.is;
 import static org.mockito.Mockito.when;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
@@ -139,5 +140,18 @@ public class ClientControllerTest {
             .andExpect(jsonPath("$.email", is(clientDTO.getEmail())));
     //.andExpect(jsonPath("$.phones", is(asJsonString(clientDTO.getPhones()))));
     //.andExpect(jsonPath("$.address", is(asJsonString(clientDTO.getAddress()))));
+  }
+  @Test
+  void whenUPDATEIsCalledThenAClientIsUpdated() throws Exception{
+    ClientDTO clientDTO = ClientDTOBuilder.createFakeDTO();
+    ClientDTO clientFakeDTO = ClientDTOBuilder.createFakeDTO();
+    clientFakeDTO.setName("pedro");
+
+    when(clientService.update(clientDTO.getId(), clientFakeDTO)).thenReturn(clientFakeDTO);
+    mockMvc.perform(MockMvcRequestBuilders.put(CLIENT_API_URL_PATH + "/" + clientDTO.getId())
+            .contentType(MediaType.APPLICATION_JSON)
+            .content(asJsonString(clientFakeDTO)))
+            .andExpect(status().isOk())
+    .andExpect(jsonPath("$.name", not(clientDTO.getName().equals(clientFakeDTO.getName()))));
   }
 }

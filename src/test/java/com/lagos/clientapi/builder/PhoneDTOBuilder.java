@@ -7,13 +7,13 @@ public class PhoneDTOBuilder {
 
   private static final Long ID = 1L;
   private static final Integer DDD = 12;
-  private static final String NUMBER = "1234567891234";
+  private static final String NUMBER = "99999999";
   private static final Boolean ACTIVE = true;
 
 
   public static PhoneDTO createFakeDTO() {
     return PhoneDTO.builder()
-            .id(1L)
+            .id(ID)
             .ddd(DDD)
             .number(NUMBER)
             .active(ACTIVE)
@@ -22,7 +22,7 @@ public class PhoneDTOBuilder {
 
   public static Phone createFakeEntity() {
     return Phone.builder()
-            .id(1L)
+            .id(ID)
             .ddd(DDD)
             .number(NUMBER)
             .active(ACTIVE)

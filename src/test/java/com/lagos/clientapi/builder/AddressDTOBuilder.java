@@ -12,12 +12,12 @@ public class AddressDTOBuilder {
   private static final String CEP = "12345678";
   private static final String COMPLEMENT = "12";
   private static final String NEIGHBORHOOD = "ingleses";
-  private static final String CITY = "floripa";
-  private static final String STATE = "SC";
+  private static final String CITY = "São Paulo";
+  private static final String STATE = "São Paulo";
 
   public static AddressDTO createFakeDTO() {
     return AddressDTO.builder()
-            .id(1L)
+            .id(ID)
             .street(STREET)
             .houseNumber(HOUSENUMBER)
             .complement(COMPLEMENT)
