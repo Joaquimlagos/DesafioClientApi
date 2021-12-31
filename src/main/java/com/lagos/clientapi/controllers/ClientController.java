@@ -20,7 +20,7 @@ public class ClientController {
 
   @PostMapping
   @ResponseStatus(HttpStatus.CREATED)
-  public ClientDTO create(@RequestBody @Valid ClientDTO clientDTO){
+  public ClientDTO createClient(@RequestBody @Valid ClientDTO clientDTO){
     return clientService.createClient(clientDTO);
   }
   @GetMapping("/{id}")
@@ -28,18 +28,19 @@ public class ClientController {
         return clientService.findById(id);
     }
   @GetMapping
-  public List<ClientDTO> listBeers() {
+  public List<ClientDTO> listAllClients() {
     return clientService.listAll();
   }
+
   @DeleteMapping("/{id}")
   @ResponseStatus(HttpStatus.NO_CONTENT)
-  public void delete(@PathVariable Long id) throws ClientNotFoundExeption {
+  public void deleteClient(@PathVariable Long id) throws ClientNotFoundExeption {
     clientService.delete(id);
   }
 
   @PutMapping("/{id}")
   @ResponseStatus(HttpStatus.OK)
-  public ClientDTO update(@PathVariable Long id, @RequestBody @Valid ClientDTO clientDTO) throws ClientNotFoundExeption {
+  public ClientDTO updateClient(@PathVariable Long id, @RequestBody @Valid ClientDTO clientDTO) throws ClientNotFoundExeption {
     return clientService.update(id, clientDTO);
   }
 
