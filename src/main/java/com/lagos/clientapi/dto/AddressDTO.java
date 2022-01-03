@@ -37,7 +37,7 @@ public class AddressDTO {
   private String state;
 
   @NotEmpty
-  @Size(min = 8, max = 8)
+  @Size(min = 9, max = 9)
   private String cep;
 
 }
