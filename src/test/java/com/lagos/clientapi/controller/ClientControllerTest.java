@@ -1,8 +1,12 @@
 package com.lagos.clientapi.controller;
 
+import com.lagos.clientapi.builder.AddressDTOBuilder;
 import com.lagos.clientapi.builder.ClientDTOBuilder;
+import com.lagos.clientapi.builder.PhoneDTOBuilder;
 import com.lagos.clientapi.controllers.ClientController;
+import com.lagos.clientapi.dto.AddressDTO;
 import com.lagos.clientapi.dto.ClientDTO;
+import com.lagos.clientapi.dto.PhoneDTO;
 import com.lagos.clientapi.exeption.ClientNotFoundExeption;
 import com.lagos.clientapi.services.ClientService;
 import org.junit.jupiter.api.BeforeEach;
@@ -53,18 +57,27 @@ public class ClientControllerTest {
   @Test
   void whenPOSTIsCalledThenAClientIsCreated() throws Exception {
     ClientDTO clientDTO = ClientDTOBuilder.createFakeDTO();
-
+    AddressDTO addressDTO = AddressDTOBuilder.createFakeDTO();
+    PhoneDTO phoneDTO = PhoneDTOBuilder.createFakeDTO();
     when(clientService.createClient(clientDTO)).thenReturn(clientDTO);
     mockMvc.perform(post(CLIENT_API_URL_PATH)
                     .contentType(MediaType.APPLICATION_JSON)
-                    .content(asJsonString(clientDTO)))
+                   .content(asJsonString(clientDTO)))
             .andExpect(status().isCreated())
             .andExpect(jsonPath("$.name", is(clientDTO.getName())))
             .andExpect(jsonPath("$.surname", is(clientDTO.getSurname())))
             .andExpect(jsonPath("$.cpf", is(clientDTO.getCpf())))
-            .andExpect(jsonPath("$.email", is(clientDTO.getEmail())));
-            //.andExpect(jsonPath("$.phones", is(asJsonString(clientDTO.getPhones()))));
-            //.andExpect(jsonPath("$.address", is(asJsonString(clientDTO.getAddress()))));
+            .andExpect(jsonPath("$.email", is(clientDTO.getEmail())))
+            .andExpect(jsonPath("$.phones[0].ddd", is(phoneDTO.getDdd())))
+            .andExpect(jsonPath("$.phones[0].number", is(phoneDTO.getNumber())))
+            .andExpect(jsonPath("$.phones[0].active", is(phoneDTO.getActive())))
+            .andExpect(jsonPath("$.address.street", is(addressDTO.getStreet())))
+            .andExpect(jsonPath("$.address.houseNumber", is(addressDTO.getHouseNumber())))
+            .andExpect(jsonPath("$.address.complement", is(addressDTO.getComplement())))
+            .andExpect(jsonPath("$.address.neighborhood", is(addressDTO.getNeighborhood())))
+            .andExpect(jsonPath("$.address.city", is(addressDTO.getCity())))
+            .andExpect(jsonPath("$.address.state", is(addressDTO.getState())))
+            .andExpect(jsonPath("$.address.cep", is(addressDTO.getCep())));
   }
 
 
@@ -126,6 +139,9 @@ public class ClientControllerTest {
   @Test
   void whenUPDATEIsCalledThenAClientIsCreated() throws Exception {
     ClientDTO clientDTO = ClientDTOBuilder.createFakeDTO();
+    AddressDTO addressDTO = AddressDTOBuilder.createFakeDTO();
+    PhoneDTO phoneDTO = PhoneDTOBuilder.createFakeDTO();
+
     clientDTO.setEmail("testando@example.com");
 
     when(clientService.update(clientDTO.getId(), clientDTO)).thenReturn(clientDTO);
@@ -137,9 +153,17 @@ public class ClientControllerTest {
             .andExpect(jsonPath("$.name", is(clientDTO.getName())))
             .andExpect(jsonPath("$.surname", is(clientDTO.getSurname())))
             .andExpect(jsonPath("$.cpf", is(clientDTO.getCpf())))
-            .andExpect(jsonPath("$.email", is(clientDTO.getEmail())));
-    //.andExpect(jsonPath("$.phones", is(asJsonString(clientDTO.getPhones()))));
-    //.andExpect(jsonPath("$.address", is(asJsonString(clientDTO.getAddress()))));
+            .andExpect(jsonPath("$.email", is(clientDTO.getEmail())))
+            .andExpect(jsonPath("$.phones[0].ddd", is(phoneDTO.getDdd())))
+            .andExpect(jsonPath("$.phones[0].number", is(phoneDTO.getNumber())))
+            .andExpect(jsonPath("$.phones[0].active", is(phoneDTO.getActive())))
+            .andExpect(jsonPath("$.address.street", is(addressDTO.getStreet())))
+            .andExpect(jsonPath("$.address.houseNumber", is(addressDTO.getHouseNumber())))
+            .andExpect(jsonPath("$.address.complement", is(addressDTO.getComplement())))
+            .andExpect(jsonPath("$.address.neighborhood", is(addressDTO.getNeighborhood())))
+            .andExpect(jsonPath("$.address.city", is(addressDTO.getCity())))
+            .andExpect(jsonPath("$.address.state", is(addressDTO.getState())))
+            .andExpect(jsonPath("$.address.cep", is(addressDTO.getCep())));
   }
   @Test
   void whenUPDATEIsCalledThenAClientIsUpdated() throws Exception{

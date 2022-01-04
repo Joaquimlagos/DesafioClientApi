@@ -1,5 +1,6 @@
 package com.lagos.clientapi.dto;
 
+import com.fasterxml.jackson.annotation.JsonProperty;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
@@ -9,8 +10,8 @@ import org.hibernate.validator.constraints.br.CPF;
 import javax.validation.Valid;
 import javax.validation.constraints.Email;
 import javax.validation.constraints.NotEmpty;
-import javax.validation.constraints.Size;
 import javax.validation.constraints.NotNull;
+import javax.validation.constraints.Size;
 import java.util.List;
 
 @Data
@@ -30,11 +31,11 @@ public class ClientDTO {
   private String surname;
 
   @NotEmpty
-  //@CPF
+  @CPF(message = "CPF Invalid !!")
   private String cpf;
 
   @NotNull
-  @Email
+  @Email(message = "Email Invalid !!")
   private String email;
 
   @Valid
@@ -43,4 +44,7 @@ public class ClientDTO {
   @Valid
   @NotNull
   private AddressDTO address;
+
+
+
 }

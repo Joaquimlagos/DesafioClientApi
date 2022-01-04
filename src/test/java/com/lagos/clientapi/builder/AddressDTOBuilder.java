@@ -9,7 +9,7 @@ public class AddressDTOBuilder {
   private static final Long ID = 1L;
   private static final String STREET = "servidão teste";
   private static final Integer HOUSENUMBER = 12;
-  private static final String CEP = "12345678";
+  private static final String CEP = "123452678";
   private static final String COMPLEMENT = "12";
   private static final String NEIGHBORHOOD = "ingleses";
   private static final String CITY = "São Paulo";

@@ -20,8 +20,8 @@ public class ClientController {
 
   @PostMapping
   @ResponseStatus(HttpStatus.CREATED)
-  public ClientDTO createClient(@RequestBody @Valid ClientDTO clientDTO){
-    return clientService.createClient(clientDTO);
+  public ClientDTO createClient(@Valid @RequestBody  ClientDTO clientDTO) {
+      return clientService.createClient(clientDTO);
   }
   @GetMapping("/{id}")
     public ClientDTO findByName(@PathVariable Long id) throws ClientNotFoundExeption {

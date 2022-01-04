@@ -19,9 +19,10 @@ public class ClientService {
   private final ClientRepository clientRepository;
   private final ClientMapper clientMapper = ClientMapper.INSTANCE;
 
-  public ClientDTO createClient(ClientDTO clientDTO){
+  public ClientDTO createClient(ClientDTO clientDTO) {
     Client client = clientMapper.toModel(clientDTO);
     Client savedClient = clientRepository.save(client);
+
     return clientMapper.toDTO(savedClient);
   }
 
