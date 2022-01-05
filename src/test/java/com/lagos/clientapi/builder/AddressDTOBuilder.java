@@ -18,12 +18,12 @@ public class AddressDTOBuilder {
   public static AddressDTO createFakeDTO() {
     return AddressDTO.builder()
             .id(ID)
-            .street(STREET)
+          //  .street(STREET)
             .houseNumber(HOUSENUMBER)
             .complement(COMPLEMENT)
-            .neighborhood(NEIGHBORHOOD)
-            .city(CITY)
-            .state(STATE)
+           // .neighborhood(NEIGHBORHOOD)
+           // .city(CITY)
+           // .state(STATE)
             .cep(CEP)
             .build();
   }
@@ -33,9 +33,9 @@ public class AddressDTOBuilder {
             .id(ID)
             .houseNumber(HOUSENUMBER)
             .complement(COMPLEMENT)
-            .neighborhood(NEIGHBORHOOD)
-            .city(CITY)
-            .state(STATE)
+           // .neighborhood(NEIGHBORHOOD)
+           // .city(CITY)
+           // .state(STATE)
             .cep(CEP)
             .build();
   }
