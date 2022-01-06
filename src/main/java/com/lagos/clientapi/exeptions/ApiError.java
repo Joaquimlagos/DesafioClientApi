@@ -1,4 +1,4 @@
-package com.lagos.clientapi.exeption;
+package com.lagos.clientapi.exeptions;
 
 import lombok.Data;
 import org.springframework.http.HttpStatus;

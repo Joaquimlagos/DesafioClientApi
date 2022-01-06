@@ -3,7 +3,8 @@ package com.lagos.clientapi.services;
 import com.lagos.clientapi.dto.ClientDTO;
 import com.lagos.clientapi.entities.Address;
 import com.lagos.clientapi.entities.Client;
-import com.lagos.clientapi.exeption.ClientNotFoundExeption;
+import com.lagos.clientapi.exeptions.CEPNotFoundExeption;
+import com.lagos.clientapi.exeptions.ClientNotFoundExeption;
 import com.lagos.clientapi.mapper.ClientMapper;
 import com.lagos.clientapi.repositories.ClientRepository;
 import lombok.AllArgsConstructor;
@@ -27,6 +28,11 @@ public class ClientService {
     String fooResourceUrl = "https://viacep.com.br/ws/";
     ResponseEntity<Address> response
             = restTemplate.getForEntity(fooResourceUrl + clientDTO.getAddress().getCep() + "/json/", Address.class);
+
+  if (response.getBody().getBairro() == null && response.getBody().getLocalidade() == null && response.getBody().getLogradouro() == null){
+    throw new CEPNotFoundExeption(clientDTO.getAddress().getCep());
+  }
+
     clientDTO.getAddress().setLocalidade(response.getBody().getLocalidade());
     clientDTO.getAddress().setBairro(response.getBody().getBairro());
     clientDTO.getAddress().setUf(response.getBody().getUf());
@@ -56,6 +62,20 @@ public class ClientService {
     clientRepository.deleteById(id);
   }
   public ClientDTO update(Long id, ClientDTO clientDTO) throws ClientNotFoundExeption {
+    RestTemplate restTemplate = new RestTemplate();
+    String fooResourceUrl = "https://viacep.com.br/ws/";
+    ResponseEntity<Address> response
+            = restTemplate.getForEntity(fooResourceUrl + clientDTO.getAddress().getCep() + "/json/", Address.class);
+
+    if (response.getBody().getBairro() == null && response.getBody().getLocalidade() == null && response.getBody().getLogradouro() == null){
+      throw new CEPNotFoundExeption(clientDTO.getAddress().getCep());
+    }
+
+    clientDTO.getAddress().setLocalidade(response.getBody().getLocalidade());
+    clientDTO.getAddress().setBairro(response.getBody().getBairro());
+    clientDTO.getAddress().setUf(response.getBody().getUf());
+    clientDTO.getAddress().setLogradouro(response.getBody().getLogradouro());
+
     clientRepository.findById(id)
             .orElseThrow(() -> new ClientNotFoundExeption(id));
 

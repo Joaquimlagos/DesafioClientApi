@@ -1,5 +1,7 @@
 package com.lagos.clientapi.dto;
 
+import com.fasterxml.jackson.annotation.JsonAlias;
+import com.fasterxml.jackson.annotation.JsonProperty;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
@@ -18,6 +20,7 @@ public class AddressDTO {
 
   private Long id;
 
+  @JsonProperty("street")
   private String logradouro;
 
   @NotNull
@@ -26,10 +29,13 @@ public class AddressDTO {
 
   private String complement;
 
+  @JsonProperty("neighborhood")
   private String bairro;
 
+  @JsonProperty ( "city" )
   private String localidade;
 
+  @JsonProperty("state")
   private String uf;
 
   @NotEmpty
