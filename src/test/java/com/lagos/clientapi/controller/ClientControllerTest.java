@@ -7,7 +7,8 @@ import com.lagos.clientapi.controllers.ClientController;
 import com.lagos.clientapi.dto.AddressDTO;
 import com.lagos.clientapi.dto.ClientDTO;
 import com.lagos.clientapi.dto.PhoneDTO;
-import com.lagos.clientapi.exeption.ClientNotFoundExeption;
+import com.lagos.clientapi.exeptions.CEPNotFoundExeption;
+import com.lagos.clientapi.exeptions.ClientNotFoundExeption;
 import com.lagos.clientapi.services.ClientService;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -71,24 +72,20 @@ public class ClientControllerTest {
             .andExpect(jsonPath("$.phones[0].ddd", is(phoneDTO.getDdd())))
             .andExpect(jsonPath("$.phones[0].number", is(phoneDTO.getNumber())))
             .andExpect(jsonPath("$.phones[0].active", is(phoneDTO.getActive())))
-            .andExpect(jsonPath("$.address.street", is(addressDTO.getStreet())))
             .andExpect(jsonPath("$.address.houseNumber", is(addressDTO.getHouseNumber())))
             .andExpect(jsonPath("$.address.complement", is(addressDTO.getComplement())))
-            .andExpect(jsonPath("$.address.neighborhood", is(addressDTO.getNeighborhood())))
-            .andExpect(jsonPath("$.address.city", is(addressDTO.getCity())))
-            .andExpect(jsonPath("$.address.state", is(addressDTO.getState())))
             .andExpect(jsonPath("$.address.cep", is(addressDTO.getCep())));
   }
 
 
   @Test
   void whenPOSTIsCalledWithoutRequiredFieldThenAnErrorIsReturned() throws Exception {
-    ClientDTO beerDTO = ClientDTOBuilder.createFakeDTO();
-    beerDTO.setCpf(null);
+    ClientDTO clientDTO = ClientDTOBuilder.createFakeDTO();
+    clientDTO.setCpf(null);
 
     mockMvc.perform(post(CLIENT_API_URL_PATH)
                     .contentType(MediaType.APPLICATION_JSON)
-                    .content(asJsonString(beerDTO)))
+                    .content(asJsonString(clientDTO)))
             .andExpect(status().isBadRequest());
   }
 
@@ -157,12 +154,8 @@ public class ClientControllerTest {
             .andExpect(jsonPath("$.phones[0].ddd", is(phoneDTO.getDdd())))
             .andExpect(jsonPath("$.phones[0].number", is(phoneDTO.getNumber())))
             .andExpect(jsonPath("$.phones[0].active", is(phoneDTO.getActive())))
-            .andExpect(jsonPath("$.address.street", is(addressDTO.getStreet())))
             .andExpect(jsonPath("$.address.houseNumber", is(addressDTO.getHouseNumber())))
             .andExpect(jsonPath("$.address.complement", is(addressDTO.getComplement())))
-            .andExpect(jsonPath("$.address.neighborhood", is(addressDTO.getNeighborhood())))
-            .andExpect(jsonPath("$.address.city", is(addressDTO.getCity())))
-            .andExpect(jsonPath("$.address.state", is(addressDTO.getState())))
             .andExpect(jsonPath("$.address.cep", is(addressDTO.getCep())));
   }
   @Test
@@ -177,5 +170,37 @@ public class ClientControllerTest {
             .content(asJsonString(clientFakeDTO)))
             .andExpect(status().isOk())
     .andExpect(jsonPath("$.name", not(clientDTO.getName().equals(clientFakeDTO.getName()))));
+  }
+
+  @Test
+  void whenPOSTIsCalledThenAAddressValidIsCreated() throws Exception {
+    ClientDTO clientDTO = ClientDTOBuilder.createFakeDTO();
+    AddressDTO addressDTO = AddressDTOBuilder.createFakeDTO();
+
+    when(clientService.createClient(clientDTO)).thenReturn(clientDTO);
+    mockMvc.perform(post(CLIENT_API_URL_PATH)
+                    .contentType(MediaType.APPLICATION_JSON)
+                    .content(asJsonString(clientDTO)))
+            .andExpect(status().isCreated())
+            .andExpect(jsonPath("$.address.houseNumber", is(addressDTO.getHouseNumber())))
+            .andExpect(jsonPath("$.address.complement", is(addressDTO.getComplement())))
+            .andExpect(jsonPath("$.address.cep", is(addressDTO.getCep())))
+            .andExpect(jsonPath("$.address.street", is(addressDTO.getLogradouro())))
+            .andExpect(jsonPath("$.address.neighborhood", is(addressDTO.getBairro())))
+            .andExpect(jsonPath("$.address.city", is(addressDTO.getLocalidade())))
+            .andExpect(jsonPath("$.address.state", is(addressDTO.getUf())));
+  }
+
+  @Test
+  void whenPOSTIsCalledWithInvalidCepThenNotFoundStatusIsReturned() throws Exception {
+    ClientDTO clientDTO = ClientDTOBuilder.createFakeDTO();
+    clientDTO.getAddress().setCep("88058438");
+
+    when(clientService.createClient(clientDTO)).thenThrow(CEPNotFoundExeption.class);
+
+    mockMvc.perform(post(CLIENT_API_URL_PATH)
+                    .contentType(MediaType.APPLICATION_JSON)
+                    .content(asJsonString(clientDTO)))
+            .andExpect(status().isNotFound());
   }
 }

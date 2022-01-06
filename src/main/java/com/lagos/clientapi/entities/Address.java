@@ -21,7 +21,7 @@ public class Address {
   private Long id;
 
   @Column(nullable = false)
-  private String street;
+  private String logradouro;
 
   @Column(nullable = false)
   private Integer houseNumber;
@@ -30,13 +30,13 @@ public class Address {
   private String complement;
 
   @Column(nullable = false)
-  private String neighborhood;
+  private String bairro;
 
   @Column(nullable = false)
-  private String city;
+  private String localidade;
 
   @Column(nullable = false)
-  private String state;
+  private String uf;
 
   @Column(nullable = false)
   private String cep;
