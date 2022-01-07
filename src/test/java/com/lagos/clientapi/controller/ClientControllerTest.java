@@ -77,7 +77,6 @@ public class ClientControllerTest {
             .andExpect(jsonPath("$.address.cep", is(addressDTO.getCep())));
   }
 
-
   @Test
   void whenPOSTIsCalledWithoutRequiredFieldThenAnErrorIsReturned() throws Exception {
     ClientDTO clientDTO = ClientDTOBuilder.createFakeDTO();
@@ -158,6 +157,7 @@ public class ClientControllerTest {
             .andExpect(jsonPath("$.address.complement", is(addressDTO.getComplement())))
             .andExpect(jsonPath("$.address.cep", is(addressDTO.getCep())));
   }
+
   @Test
   void whenUPDATEIsCalledThenAClientIsUpdated() throws Exception{
     ClientDTO clientDTO = ClientDTOBuilder.createFakeDTO();

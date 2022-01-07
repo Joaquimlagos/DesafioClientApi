@@ -1,17 +1,14 @@
 package com.lagos.clientapi.services;
 
 import com.lagos.clientapi.dto.ClientDTO;
-import com.lagos.clientapi.entities.Address;
 import com.lagos.clientapi.entities.Client;
-import com.lagos.clientapi.exeptions.CEPNotFoundExeption;
 import com.lagos.clientapi.exeptions.ClientNotFoundExeption;
 import com.lagos.clientapi.mapper.ClientMapper;
 import com.lagos.clientapi.repositories.ClientRepository;
+import com.lagos.clientapi.utils.ClientCepApi;
 import lombok.AllArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
-import org.springframework.web.client.RestTemplate;
 
 import java.util.List;
 import java.util.stream.Collectors;
@@ -24,21 +21,9 @@ public class ClientService {
   private final ClientMapper clientMapper = ClientMapper.INSTANCE;
 
   public ClientDTO createClient(ClientDTO clientDTO) {
-    RestTemplate restTemplate = new RestTemplate();
-    String fooResourceUrl = "https://viacep.com.br/ws/";
-    ResponseEntity<Address> response
-            = restTemplate.getForEntity(fooResourceUrl + clientDTO.getAddress().getCep() + "/json/", Address.class);
 
-  if (response.getBody().getBairro() == null && response.getBody().getLocalidade() == null && response.getBody().getLogradouro() == null){
-    throw new CEPNotFoundExeption(clientDTO.getAddress().getCep());
-  }
-
-    clientDTO.getAddress().setLocalidade(response.getBody().getLocalidade());
-    clientDTO.getAddress().setBairro(response.getBody().getBairro());
-    clientDTO.getAddress().setUf(response.getBody().getUf());
-    clientDTO.getAddress().setLogradouro(response.getBody().getLogradouro());
-
-    Client client = clientMapper.toModel(clientDTO);
+    ClientDTO clientDTOCepValidated = new ClientCepApi().getCepApi(clientDTO);
+    Client client = clientMapper.toModel(clientDTOCepValidated);
     Client savedClient = clientRepository.save(client);
 
     return clientMapper.toDTO(savedClient);
@@ -62,28 +47,14 @@ public class ClientService {
     clientRepository.deleteById(id);
   }
   public ClientDTO update(Long id, ClientDTO clientDTO) throws ClientNotFoundExeption {
-    RestTemplate restTemplate = new RestTemplate();
-    String fooResourceUrl = "https://viacep.com.br/ws/";
-    ResponseEntity<Address> response
-            = restTemplate.getForEntity(fooResourceUrl + clientDTO.getAddress().getCep() + "/json/", Address.class);
-
-    if (response.getBody().getBairro() == null && response.getBody().getLocalidade() == null && response.getBody().getLogradouro() == null){
-      throw new CEPNotFoundExeption(clientDTO.getAddress().getCep());
-    }
-
-    clientDTO.getAddress().setLocalidade(response.getBody().getLocalidade());
-    clientDTO.getAddress().setBairro(response.getBody().getBairro());
-    clientDTO.getAddress().setUf(response.getBody().getUf());
-    clientDTO.getAddress().setLogradouro(response.getBody().getLogradouro());
 
     clientRepository.findById(id)
             .orElseThrow(() -> new ClientNotFoundExeption(id));
 
-    Client updatedClient = clientMapper.toModel(clientDTO);
+    ClientDTO clientDTOCepValidated = new ClientCepApi().getCepApi(clientDTO);
+    Client updatedClient = clientMapper.toModel(clientDTOCepValidated);
     Client savedPerson = clientRepository.save(updatedClient);
     return clientMapper.toDTO(savedPerson);
 
-
-    //https://h-apigateway.conectagov.estaleiro.serpro.gov.br/api-cep/v1/consulta/cep/60130240
   }
 }
