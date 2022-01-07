@@ -35,12 +35,7 @@ public class ClientController {
   @DeleteMapping("/{id}")
   @ResponseStatus(HttpStatus.NO_CONTENT)
   public void deleteClient(@PathVariable Long id) throws ClientNotFoundExeption {
-    try{
       clientService.delete(id);
-    } catch (ClientNotFoundExeption clientNotFound) {
-      throw new ClientNotFoundExeption(id);
-    }
-
   }
 
   @PutMapping("/{id}")
